@@ -21,27 +21,23 @@ exports.create = (text, callback) => {
 };
 
 
-
-// exports.create = (text, callback) => {
-//   var id = counter.getNextUniqueId(callback);
-//   items[id] = text;
-//   callback(null, { id, text });
-
-//   fs.writeFile(`${id}.txt`, text, (err) => {
-//     if (err){
-//       console.log('error')
-//     } else {
-//       console.log('success')
-//     }
-//   });
-// };
-
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
-  });
-  callback(null, data);
+  fs.readdir(exports.dataDir, (err, files) => {
+    if (err) {
+      console.log('error')
+    } else {
+      var data = _.map(files, (id) => {
+        return {id: id.slice(0, id.length-4), text: id.slice(0, id.length-4)};
+      });
+      callback(null, data)
+    }
+  })
 };
+
+  // var data = _.map(items, (text, id) => {
+  //   return { id, text };
+  // });
+  // callback(null, data);
 
 exports.readOne = (id, callback) => {
   var text = items[id];
